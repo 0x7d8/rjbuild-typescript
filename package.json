@@ -1,0 +1,42 @@
+{
+  "name": "rjbuild-typescript",
+  "version": "1.0.0",
+  "description": "Easy and Fast way to build typescript projects",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "scripts": {
+    "build": "rm -rf lib && tsc && esbuild `find src \\( -name '*.ts' -o -name '*.tsx' \\)` --platform='node' --ignore-annotations --format='cjs' --outdir='lib/cjs' && esbuild `find src \\( -name '*.ts' -o -name '*.tsx' \\)` --platform='node' --ignore-annotations --format='esm' --outdir='lib/esm' && cp -r lib/typings/* lib/cjs && cp -r lib/typings/* lib/esm && rm -rf lib/typings && cp package.json lib/cjs/pckg.json && cp package.json lib/esm/pckg.json",
+    "install:dev": "npm install -g --install-links .",
+    "test": "yarn build && node test"
+  },
+  "bin": {
+    "rjbuild": "lib/cjs/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rotvproHD/NPM_RJWEB-SERVER-EJS.git"
+  },
+  "keywords": [
+    "webserver",
+    "ejs",
+    "lightweight",
+    "parser"
+  ],
+  "author": "0x4096 (Robert Jansen)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rotvproHD/NPM_RJWEB-SERVER-EJS/issues"
+  },
+  "homepage": "https://github.com/rotvproHD/NPM_RJWEB-SERVER-EJS#readme",
+  "devDependencies": {
+    "@types/node": "^18.15.0",
+    "@types/yargs": "^17.0.24",
+    "rjbuild-typescript": "link:.",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "esbuild": "^0.17.18",
+    "rjutils-collection": "^1.4.0",
+    "yargs": "^17.7.1"
+  }
+}
