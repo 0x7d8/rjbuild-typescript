@@ -1,6 +1,6 @@
 {
   "name": "rjbuild-typescript",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy and Fast way to build typescript projects",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",

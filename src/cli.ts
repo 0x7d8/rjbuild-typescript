@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Version } from "./index"
 import { getFilesRecursively } from "rjutils-collection"
 
