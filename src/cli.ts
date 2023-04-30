@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 
 import { Version } from "./index"
 import { getFilesRecursively } from "rjutils-collection"
@@ -90,7 +90,7 @@ yargs
 			let shell: child.ChildProcess
 
 			const executeWatch = () => {
-				const files = getFilesRecursively(path.resolve(args.folder), false).filter((f) => /.*ts|tsx/.test(f))
+				const files = getFilesRecursively(path.resolve(args.folder), false)
 
 				const startTime = Date.now()
 				console.log(`${prefix} ${colors.fg.gray}Building ${colors.fg.cyan}${files.length} ${colors.fg.gray}Files...`)
@@ -98,7 +98,7 @@ yargs
 				let errored: boolean = false
 				try {
 					const buildMain = esbuild.buildSync({
-						entryPoints: files.map((f) => path.resolve(f)),
+						entryPoints: files.filter((f) => /.*\.(ts|tsx)/.test(f)).map((f) => path.resolve(f)),
 						format: args.format as any,
 						outdir: path.resolve(args.out),
 						allowOverwrite: true,
@@ -113,6 +113,10 @@ yargs
 						banner: {
 							js: args['index-banner']
 						}, sourcemap: args.sourcemap
+					})
+
+					files.filter((f) => !/.*\.(ts|tsx)/.test(f)).forEach((f) => {
+						fs.copyFileSync(path.resolve(f), path.join(path.resolve(args.out), f.replace(process.cwd(), '').replace(args.folder, '')))
 					})
 				} catch (error: any) {
 					errored = true

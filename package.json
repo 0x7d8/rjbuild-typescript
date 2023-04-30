@@ -1,13 +1,12 @@
 {
   "name": "rjbuild-typescript",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Easy and Fast way to build typescript projects",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "scripts": {
     "build": "rm -rf lib && tsc && esbuild `find src \\( -name '*.ts' -o -name '*.tsx' \\)` --platform='node' --ignore-annotations --format='cjs' --outdir='lib/cjs' && esbuild `find src \\( -name '*.ts' -o -name '*.tsx' \\)` --platform='node' --ignore-annotations --format='esm' --outdir='lib/esm' && cp -r lib/typings/* lib/cjs && cp -r lib/typings/* lib/esm && rm -rf lib/typings && cp package.json lib/cjs/pckg.json && cp package.json lib/esm/pckg.json",
-    "install:dev": "npm install -g --install-links .",
-    "test": "yarn build && node test"
+    "install:dev": "npm install -g --install-links ."
   },
   "bin": {
     "rjbuild": "lib/cjs/cli.js"
