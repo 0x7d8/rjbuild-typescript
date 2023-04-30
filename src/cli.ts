@@ -90,7 +90,7 @@ yargs
 			let shell: child.ChildProcess
 
 			const executeWatch = () => {
-				const files = getFilesRecursively(path.resolve(args.folder), false)
+				const files = getFilesRecursively(path.resolve(args.folder), false).filter((f) => /.*ts|tsx/.test(f))
 
 				const startTime = Date.now()
 				console.log(`${prefix} ${colors.fg.gray}Building ${colors.fg.cyan}${files.length} ${colors.fg.gray}Files...`)
