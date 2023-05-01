@@ -97,17 +97,19 @@ yargs
 
 				let errored: boolean = false
 				try {
-					const buildMain = esbuild.buildSync({
+					esbuild.buildSync({
 						entryPoints: files.filter((f) => /.*\.(ts|tsx)/.test(f)).map((f) => path.resolve(f)),
 						format: args.format as any,
+						platform: 'node',
 						outdir: path.resolve(args.out),
 						allowOverwrite: true,
 						sourcemap: args.sourcemap
 					})
 
-					const buildIndex = esbuild.buildSync({
+					esbuild.buildSync({
 						entryPoints: [path.join(path.resolve(args.folder), 'index.ts')],
 						format: args.format as any,
+						platform: 'node',
 						outfile: path.join(path.resolve(args.out), 'index.js'),
 						allowOverwrite: true,
 						banner: {
