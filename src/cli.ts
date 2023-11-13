@@ -68,6 +68,12 @@ yargs
 				alias: ['f'],
 				default: 'cjs',
 			})
+			.option('tsConfig', {
+				type: 'string',
+				description: 'The Tsconfig file to use for configuration',
+				alias: ['tsC'],
+				default: './tsconfig.json',
+			})
 			.option('sourcemap', {
 				type: 'boolean',
 				description: 'Whether to generate source maps',
@@ -86,10 +92,10 @@ yargs
 				alias: ['iB'],
 				default: '',
 			})
-		), (args) => {
+		), async(args) => {
 			let shell: child.ChildProcess
 
-			const executeWatch = () => {
+			const executeWatch = async() => {
 				const files = getFilesRecursively(path.resolve(args.folder), false)
 
 				const startTime = Date.now()
@@ -97,20 +103,22 @@ yargs
 
 				let errored: boolean = false
 				try {
-					esbuild.buildSync({
+					await esbuild.build({
 						entryPoints: files.filter((f) => /.*\.(ts|tsx)/.test(f)).map((f) => path.resolve(f)),
 						format: args.format as any,
 						platform: 'node',
 						outdir: path.resolve(args.out),
+						tsconfig: args.tsConfig,
 						allowOverwrite: true,
 						sourcemap: args.sourcemap
 					})
 
-					esbuild.buildSync({
+					await esbuild.build({
 						entryPoints: [path.join(path.resolve(args.folder), 'index.ts')],
 						format: args.format as any,
 						platform: 'node',
 						outfile: path.join(path.resolve(args.out), 'index.js'),
+						tsconfig: args.tsConfig,
 						allowOverwrite: true,
 						banner: {
 							js: args['index-banner']
@@ -121,6 +129,7 @@ yargs
 						fs.copyFileSync(path.resolve(f), path.join(path.resolve(args.out), f.replace(process.cwd(), '').replace(args.folder, '')))
 					})
 				} catch (error: any) {
+					console.error(error)
 					errored = true
 				}
 
@@ -153,8 +162,8 @@ yargs
 
 			if (args.watch) {
 				fs.watch(path.resolve(args.folder), { recursive: true }, executeWatch)
-				executeWatch()
-			} else executeWatch()
+				await executeWatch()
+			} else await executeWatch()
 		}
 	)
 	.help()

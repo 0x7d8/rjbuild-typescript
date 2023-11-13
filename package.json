@@ -1,6 +1,6 @@
 {
   "name": "rjbuild-typescript",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Easy and Fast way to build typescript projects",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -34,7 +34,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "esbuild": "^0.17.18",
+    "esbuild": "*",
     "rjutils-collection": "^1.4.0",
     "yargs": "^17.7.1"
   }
